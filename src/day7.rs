@@ -46,12 +46,34 @@ impl<'a> Circuit<'a> {
     fn evaluate(&mut self, key: &str) -> u16 {
         let operator = self.instructions.get(key).unwrap();
         match operator {
-            Operator::And { left, right } => self.process_two(left, right, |x, y| x & y),
-            Operator::Or { left, right } => self.process_two(left, right, |x, y| x | y),
-            Operator::Lshift { left, right } => self.process_two(left, right, |x, y| x << y),
-            Operator::Rshift { left, right } => self.process_two(left, right, |x, y| x >> y),
-            Operator::Not(operand) => !self.parse_digit(operand),
-            Operator::Value(operand) => self.parse_digit(operand),
+            Operator::And { left, right } => {
+                let left = *left;
+                let right = *right;
+                self.process_two(left, right, |x, y| x & y)
+            }
+            Operator::Or { left, right } => {
+                let left = *left;
+                let right = *right;
+                self.process_two(left, right, |x, y| x | y)
+            }
+            Operator::Lshift { left, right } => {
+                let left = *left;
+                let right = *right;
+                self.process_two(left, right, |x, y| x << y)
+            }
+            Operator::Rshift { left, right } => {
+                let left = *left;
+                let right = *right;
+                self.process_two(left, right, |x, y| x >> y)
+            }
+            Operator::Not(operand) => {
+                let operand = *operand;
+                !self.parse_digit(operand)
+            }
+            Operator::Value(operand) => {
+                let operand = *operand;
+                self.parse_digit(operand)
+            }
             Operator::Evaluated(operand) => *operand,
         }
     }
